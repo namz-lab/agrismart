@@ -22,11 +22,11 @@ export function DetectionClient() {
     try {
       const identificationResult = await identifyPlantDisease({ photoDataUri: imageDataUrl });
 
-      if (identificationResult.plantType === 'Unknown' || identificationResult.diseaseName === 'Unknown') {
+      if (identificationResult.plantType === 'Unknown' || identificationResult.diseaseName === 'Disease not supported') {
         toast({
             variant: "default",
-            title: "Could not identify plant",
-            description: "Please try another image. Ensure the plant is one of the supported cash crops.",
+            title: "Could not identify disease",
+            description: "The disease is not supported in the current model. Please try another image.",
         });
         setIsProcessing(false);
         return;

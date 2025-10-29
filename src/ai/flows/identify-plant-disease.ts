@@ -24,7 +24,7 @@ export type IdentifyPlantDiseaseInput = z.infer<typeof IdentifyPlantDiseaseInput
 const IdentifyPlantDiseaseOutputSchema = z.object({
   diseaseName: z.string().describe('The common name of the identified disease, if any.'),
   confidenceScore: z.number().describe('The confidence score (0-1) of the identification.'),
-  plantType: z.string().describe('The type of plant the leaf belongs to. Supported cash crops are: Beans, Cotton, Maize, Potatoes, Sunflower, Tobacco, Tomato, Wheat. If the plant is not in this list, return "Unknown".'),
+  plantType: z.string().describe('The type of plant the leaf belongs to. Supported cash crops are: Beans, Cotton, Maize/Corn, Potatoes, Sunflower, Tobacco, Tomato and Wheat. If the plant is not in this list, return "Unknown".'),
 });
 export type IdentifyPlantDiseaseOutput = z.infer<typeof IdentifyPlantDiseaseOutputSchema>;
 
@@ -53,7 +53,8 @@ const identifyPlantDiseasePrompt = ai.definePrompt({
   - **Tomato:** Bacterial spot, Early blight, Late blight, Leaf Mold, Mosaic virus, Septoria leaf spot, Spider mite, Target spot, Yellow leaf curl virus.
   - **Wheat:** Septoria, Stripe rust.
 
-  If the image is not a plant leaf, or the plant is not one of the supported types (Beans, Cotton, Maize, Potatoes, Sunflower, Tobacco, Tomato, Wheat), return "Unknown" for plantType, "Unknown" for diseaseName, and 0 for confidenceScore.
+  If the image shows a disease not on this list, try to find the most visually similar disease from the list and identify it as such. If there is no resemblance to any disease on the list, or if the image is not a plant leaf, return "Disease not supported" for diseaseName, the identified plant for plantType, and 0 for confidenceScore.
+  If the plant is not one of the supported types (Beans, Cotton, Maize, Potatoes, Sunflower, Tobacco, Tomato, Wheat), return "Unknown" for plantType, "Disease not supported" for diseaseName, and 0 for confidenceScore.
   If no disease is found on a supported plant, return "Healthy" for diseaseName and 1 for confidenceScore.
 
   Here is the plant leaf image: {{media url=photoDataUri}}
