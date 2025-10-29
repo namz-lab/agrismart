@@ -1,6 +1,6 @@
 import type { DetectionResult } from '@/types';
 
-const HISTORY_KEY = 'agriSmart-detectionHistory';
+const HISTORY_KEY = 'AGRISMART-detectionHistory';
 
 export const getHistory = (): DetectionResult[] => {
   if (typeof window === 'undefined') {

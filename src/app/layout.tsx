@@ -3,8 +3,8 @@ import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
-  title: 'AgriSmart',
-  description: 'AI-Powered Plant Disease Detection',
+  title: 'AGRISMART',
+  description: 'A Vision Transformer-Based Application for Disease Detection on Cash Crops',
 };
 
 export default function RootLayout({

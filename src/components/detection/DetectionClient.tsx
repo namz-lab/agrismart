@@ -26,13 +26,13 @@ export function DetectionClient() {
         toast({
             variant: "default",
             title: "Could not identify plant",
-            description: "Please try another image. Ensure the plant is from the supported dataset.",
+            description: "Please try another image. Ensure the plant is one of the supported cash crops.",
         });
         setIsProcessing(false);
         return;
       }
 
-      if (identificationResult.diseaseName === 'No disease found') {
+      if (identificationResult.diseaseName === 'Healthy') {
         toast({
             variant: "default",
             title: "Healthy Plant!",
@@ -55,7 +55,11 @@ export function DetectionClient() {
 
     } catch (error) {
       console.error('An error occurred during detection:', error);
-      // Fail silently without a toast
+      toast({
+        variant: "destructive",
+        title: "Analysis Failed",
+        description: "An unexpected error occurred. Please try again.",
+      });
       setIsProcessing(false);
     }
   };

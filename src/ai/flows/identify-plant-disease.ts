@@ -25,7 +25,7 @@ const IdentifyPlantDiseaseOutputSchema = z.object({
   diseaseName: z.string().describe('The common name of the identified disease, if any.'),
   scientificName: z.string().describe('The scientific name of the identified disease, if any.'),
   confidenceScore: z.number().describe('The confidence score (0-1) of the identification.'),
-  plantType: z.string().describe('The type of plant the leaf belongs to (e.g. Beans, Cotton, Maize/Corn, Potatoes, Sunflower, Tobacco, Tomato, Wheat). If the plant is not in this list, return "Unknown".'),
+  plantType: z.string().describe('The type of plant the leaf belongs to. Supported cash crops are: Beans, Cotton, Maize, Potatoes, Sunflower, Tobacco, Tomato, Wheat. If the plant is not in this list, return "Unknown".'),
 });
 export type IdentifyPlantDiseaseOutput = z.infer<typeof IdentifyPlantDiseaseOutputSchema>;
 
@@ -39,13 +39,13 @@ const identifyPlantDiseasePrompt = ai.definePrompt({
   name: 'identifyPlantDiseasePrompt',
   input: {schema: IdentifyPlantDiseaseInputSchema},
   output: {schema: IdentifyPlantDiseaseOutputSchema},
-  prompt: `You are an expert in plant pathology. You will analyze the image of a plant leaf and identify potential diseases.
+  prompt: `You are an expert in plant pathology, using a model fine-tuned on a comprehensive dataset of 32,678 images covering 42 disease classes for Zimbabwean cash crops. You will analyze the image of a plant leaf and identify potential diseases.
 
-  Analyze the following plant leaf image and provide the disease name, scientific name and confidence score (0-1) of your identification.
-  The identification should be from within the supported dataset.
-  Also, tell me the type of plant this leaf belongs to. The supported plants are: Beans, Cotton, Maize/Corn, Potatoes, Sunflower, Tobacco, Tomato, Wheat.
+  Analyze the following plant leaf image and provide the disease name, scientific name, and a confidence score (0-1) of your identification.
+  The identification should be from within the supported dataset of Zimbabwean cash crops.
+  Also, tell me the type of plant this leaf belongs to. The supported plants are: Beans, Cotton, Maize, Potatoes, Sunflower, Tobacco, Tomato, Wheat.
   If the image is not a plant leaf, or the plant is not one of the supported types, return "Unknown" for plantType, "Unknown" for diseaseName, "Unknown" for scientificName and 0 for confidenceScore.
-  If no disease is found on a supported plant, return "No disease found" for diseaseName and scientificName, and 1 for confidenceScore.
+  If no disease is found on a supported plant, return "Healthy" for diseaseName, "N/A" for scientificName, and 1 for confidenceScore.
 
   Here is the plant leaf image: {{media url=photoDataUri}}
 `,

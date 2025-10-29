@@ -11,7 +11,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
       <header className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex items-center gap-2">
-          <h1 className="text-2xl font-bold font-headline text-primary">AgriSmart</h1>
+          <h1 className="text-2xl font-bold font-headline text-primary">AGRISMART</h1>
         </div>
       </header>
 
@@ -20,12 +20,10 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6 text-center md:text-left">
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold font-headline text-primary tracking-tight">
-                Healthy Crops,
-                <br />
-                Smarter Farming.
+                AI-Powered Disease Detection for Cash Crops.
               </h2>
               <p className="text-lg text-muted-foreground max-w-xl mx-auto md:mx-0">
-                Instantly identify plant diseases with a snap of your camera. Get expert treatment recommendations and keep your crops thriving.
+                Instantly identify plant diseases with a snap of your camera. Our Vision Transformer model provides accurate, offline-first diagnosis to protect your harvest.
               </p>
               <div className="flex justify-center md:justify-start">
                 <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
@@ -52,7 +50,7 @@ export default function Home() {
       </main>
 
       <footer className="text-center py-6 text-sm text-muted-foreground">
-        © {new Date().getFullYear()} AgriSmart. All rights reserved.
+        © {new Date().getFullYear()} AGRISMART. All rights reserved.
       </footer>
     </div>
   );
