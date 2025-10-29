@@ -1,3 +1,10 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "hero-plant",
+      "description": "A healthy, vibrant green plant growing in a field, representing the goal of the AgriSmart app.",
+      "imageUrl": "https://images.unsplash.com/photo-1525923838299-231242945478?q=80&w=1200&h=800&fit=crop",
+      "imageHint": "healthy plant"
+    }
+  ]
 }
