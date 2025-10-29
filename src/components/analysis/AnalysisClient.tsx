@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getHistoryItem } from '@/lib/history';
@@ -8,8 +8,7 @@ import type { DetectionResult } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { ArrowLeft, AlertTriangle, Leaf, Syringe, ShieldCheck } from 'lucide-react';
+import { ArrowLeft, AlertTriangle } from 'lucide-react';
 import { Loader } from '../ui/loader';
 
 interface AnalysisClientProps {
@@ -22,33 +21,6 @@ export function AnalysisClient({ id }: AnalysisClientProps) {
   useEffect(() => {
     setResult(getHistoryItem(id));
   }, [id]);
-
-  const parsedRecommendations = useMemo(() => {
-    if (!result) return {};
-    const text = result.recommendations.treatmentRecommendations;
-    const sections: { [key: string]: string } = {};
-    const regex = /(Fungicide Recommendations|Organic Alternatives|Prevention Tips):/gi;
-    let match;
-    let lastIndex = 0;
-    const keys: string[] = [];
-
-    while ((match = regex.exec(text)) !== null) {
-      if (keys.length > 0) {
-        sections[keys[keys.length - 1]] = text.substring(lastIndex, match.index).trim();
-      }
-      keys.push(match[1]);
-      lastIndex = match.index + match[0].length;
-    }
-    if (keys.length > 0) {
-      sections[keys[keys.length - 1]] = text.substring(lastIndex).trim();
-    }
-    
-    if (Object.keys(sections).length === 0) {
-        return { 'Recommendations': text };
-    }
-
-    return sections;
-  }, [result]);
 
   if (result === undefined) {
     return <div className="flex h-96 items-center justify-center"><Loader text="Loading analysis..." /></div>;
@@ -69,7 +41,7 @@ export function AnalysisClient({ id }: AnalysisClientProps) {
     );
   }
 
-  const { identification, recommendations, imageDataUrl, timestamp } = result;
+  const { identification, imageDataUrl, timestamp } = result;
   const confidencePercent = Math.round(identification.confidenceScore * 100);
 
   return (
@@ -101,32 +73,6 @@ export function AnalysisClient({ id }: AnalysisClientProps) {
               <span className="font-bold text-lg text-primary">{confidencePercent}%</span>
             </div>
           </div>
-        </CardContent>
-      </Card>
-      
-      <Card>
-        <CardHeader>
-            <CardTitle>Treatment & Prevention</CardTitle>
-            <CardDescription>Expert recommendations to manage the disease and protect your crops.</CardDescription>
-        </CardHeader>
-        <CardContent>
-            <Accordion type="single" collapsible className="w-full" defaultValue={Object.keys(parsedRecommendations)[0] || 'Recommendations'}>
-                {Object.entries(parsedRecommendations).map(([title, content]) => (
-                     <AccordionItem value={title} key={title}>
-                        <AccordionTrigger className="text-lg font-semibold">
-                            <div className="flex items-center gap-2">
-                                {title.includes('Fungicide') && <Syringe className="h-5 w-5 text-primary" />}
-                                {title.includes('Organic') && <Leaf className="h-5 w-5 text-primary" />}
-                                {title.includes('Prevention') && <ShieldCheck className="h-5 w-5 text-primary" />}
-                                {title}
-                            </div>
-                        </AccordionTrigger>
-                        <AccordionContent className="prose prose-sm max-w-none text-foreground/90 whitespace-pre-wrap">
-                            {content}
-                        </AccordionContent>
-                    </AccordionItem>
-                ))}
-            </Accordion>
         </CardContent>
       </Card>
     </div>

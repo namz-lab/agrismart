@@ -2,7 +2,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
-import { Logo } from '@/components/icons/Logo';
 import { placeholderImages } from '@/lib/placeholder-images.json';
 
 export default function Home() {
@@ -12,7 +11,6 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
       <header className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex items-center gap-2">
-          <Logo className="h-8 w-8 text-primary" />
           <h1 className="text-2xl font-bold font-headline text-primary">AgriSmart</h1>
         </div>
       </header>

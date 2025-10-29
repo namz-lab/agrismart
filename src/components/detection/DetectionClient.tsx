@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { identifyPlantDisease } from '@/ai/flows/identify-plant-disease';
-import { generateTreatmentRecommendations } from '@/ai/flows/generate-treatment-recommendations';
 import { addToHistory } from '@/lib/history';
 import { useToast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -23,6 +22,16 @@ export function DetectionClient() {
     try {
       const identificationResult = await identifyPlantDisease({ photoDataUri: imageDataUrl });
 
+      if (identificationResult.plantType === 'Unknown' || identificationResult.diseaseName === 'Unknown') {
+        toast({
+            variant: "default",
+            title: "Could not identify plant",
+            description: "Please try another image. Ensure the plant is from the supported dataset.",
+        });
+        setIsProcessing(false);
+        return;
+      }
+
       if (identificationResult.diseaseName === 'No disease found') {
         toast({
             variant: "default",
@@ -33,18 +42,12 @@ export function DetectionClient() {
         return;
       }
 
-      const recommendationResult = await generateTreatmentRecommendations({
-        diseaseName: identificationResult.scientificName,
-        cropName: identificationResult.plantType,
-      });
-
       const resultId = Date.now().toString();
       const detectionResult = {
         id: resultId,
         timestamp: Date.now(),
         imageDataUrl,
         identification: identificationResult,
-        recommendations: recommendationResult,
       };
 
       addToHistory(detectionResult);
@@ -52,11 +55,7 @@ export function DetectionClient() {
 
     } catch (error) {
       console.error('An error occurred during detection:', error);
-      toast({
-        variant: 'destructive',
-        title: 'Analysis Failed',
-        description: 'Could not analyze the image. Please try again.',
-      });
+      // Fail silently without a toast
       setIsProcessing(false);
     }
   };

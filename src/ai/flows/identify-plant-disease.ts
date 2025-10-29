@@ -5,8 +5,8 @@
  *
  * It exports:
  * - `identifyPlantDisease` - The main function to call to identify a plant disease.
- * - `IdentifyPlantDiseaseInput` - The input type for the `identifyPlantDisease` function.
- * - `IdentifyPlantDiseaseOutput` - The output type for the `identifyPlantDisease` function.
+ * - `IdentifyPlantDiseaseInput` - The input type for the `identifyPlantdisease` function.
+ * - `IdentifyPlantDiseaseOutput` - The output type for the `identifyPlantdisease` function.
  */
 
 import {ai} from '@/ai/genkit';
@@ -25,7 +25,7 @@ const IdentifyPlantDiseaseOutputSchema = z.object({
   diseaseName: z.string().describe('The common name of the identified disease, if any.'),
   scientificName: z.string().describe('The scientific name of the identified disease, if any.'),
   confidenceScore: z.number().describe('The confidence score (0-1) of the identification.'),
-  plantType: z.string().describe('The type of plant the leaf belongs to (e.g. Beans, Cotton, Maize/Corn, Potatoes, Sunflower, Tobacco, Tomato, Wheat).'),
+  plantType: z.string().describe('The type of plant the leaf belongs to (e.g. Beans, Cotton, Maize/Corn, Potatoes, Sunflower, Tobacco, Tomato, Wheat). If the plant is not in this list, return "Unknown".'),
 });
 export type IdentifyPlantDiseaseOutput = z.infer<typeof IdentifyPlantDiseaseOutputSchema>;
 
@@ -42,10 +42,12 @@ const identifyPlantDiseasePrompt = ai.definePrompt({
   prompt: `You are an expert in plant pathology. You will analyze the image of a plant leaf and identify potential diseases.
 
   Analyze the following plant leaf image and provide the disease name, scientific name and confidence score (0-1) of your identification.
-  Also, tell me the type of plant this leaf belongs to (e.g. Beans, Cotton, Maize/Corn, Potatoes, Sunflower, Tobacco, Tomato, Wheat).
+  The identification should be from within the supported dataset.
+  Also, tell me the type of plant this leaf belongs to. The supported plants are: Beans, Cotton, Maize/Corn, Potatoes, Sunflower, Tobacco, Tomato, Wheat.
+  If the image is not a plant leaf, or the plant is not one of the supported types, return "Unknown" for plantType, "Unknown" for diseaseName, "Unknown" for scientificName and 0 for confidenceScore.
+  If no disease is found on a supported plant, return "No disease found" for diseaseName and scientificName, and 1 for confidenceScore.
 
   Here is the plant leaf image: {{media url=photoDataUri}}
-  If no disease is found, return "No disease found" for diseaseName and scientificName, and 1 for confidenceScore.
 `,
 });
 
