@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Progress } from '@/components/ui/progress';
 import { ArrowLeft, AlertTriangle } from 'lucide-react';
 import { Loader } from '../ui/loader';
+import { generateTreatmentRecommendations } from '@/ai/flows/generate-treatment-recommendations';
 
 interface AnalysisClientProps {
   id: string;
@@ -54,9 +55,6 @@ export function AnalysisClient({ id }: AnalysisClientProps) {
         <CardHeader>
           <CardTitle className="text-3xl font-headline">{identification.diseaseName}</CardTitle>
           <CardDescription className="flex flex-col sm:flex-row sm:items-center sm:gap-4">
-            <span>
-              <strong>Scientific Name:</strong> <em>{identification.scientificName}</em>
-            </span>
             <span>
               <strong>Plant Type:</strong> {identification.plantType}
             </span>

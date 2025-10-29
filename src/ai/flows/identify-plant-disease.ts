@@ -23,7 +23,6 @@ export type IdentifyPlantDiseaseInput = z.infer<typeof IdentifyPlantDiseaseInput
 
 const IdentifyPlantDiseaseOutputSchema = z.object({
   diseaseName: z.string().describe('The common name of the identified disease, if any.'),
-  scientificName: z.string().describe('The scientific name of the identified disease, if any.'),
   confidenceScore: z.number().describe('The confidence score (0-1) of the identification.'),
   plantType: z.string().describe('The type of plant the leaf belongs to. Supported cash crops are: Beans, Cotton, Maize, Potatoes, Sunflower, Tobacco, Tomato, Wheat. If the plant is not in this list, return "Unknown".'),
 });
@@ -39,13 +38,23 @@ const identifyPlantDiseasePrompt = ai.definePrompt({
   name: 'identifyPlantDiseasePrompt',
   input: {schema: IdentifyPlantDiseaseInputSchema},
   output: {schema: IdentifyPlantDiseaseOutputSchema},
-  prompt: `You are an expert in plant pathology, using a model fine-tuned on a comprehensive dataset of 32,678 images covering 42 disease classes for Zimbabwean cash crops. You will analyze the image of a plant leaf and identify potential diseases.
+  prompt: `You are an expert in plant pathology, using a model fine-tuned on a comprehensive dataset for Zimbabwean cash crops. You will analyze the image of a plant leaf and identify potential diseases.
 
-  Analyze the following plant leaf image and provide the disease name, scientific name, and a confidence score (0-1) of your identification.
-  The identification should be from within the supported dataset of Zimbabwean cash crops.
-  Also, tell me the type of plant this leaf belongs to. The supported plants are: Beans, Cotton, Maize, Potatoes, Sunflower, Tobacco, Tomato, Wheat.
-  If the image is not a plant leaf, or the plant is not one of the supported types, return "Unknown" for plantType, "Unknown" for diseaseName, "Unknown" for scientificName and 0 for confidenceScore.
-  If no disease is found on a supported plant, return "Healthy" for diseaseName, "N/A" for scientificName, and 1 for confidenceScore.
+  Analyze the following plant leaf image and provide the disease name and a confidence score (0-1) of your identification.
+  The identification must be from within the supported dataset of Zimbabwean cash crops.
+
+  Here are the supported plants and their diseases:
+  - **Beans:** Angular leaf spot, Anthracnose, Rust, Mosaic.
+  - **Cotton:** Bacterial blight, Curl virus, Fusarium wilt.
+  - **Maize:** Blight, Common rust, Downy mildew, Gray leaf spot, Streak virus, Lethal necrosis.
+  - **Potatoes:** Early blight, Late blight.
+  - **Sunflower:** Downy Mildew, Gray Mold, Leaf scars.
+  - **Tobacco:** Target Leaf spot, Brown Spot 3, Alternaria Tabac, Alternaria Zimbabwe.
+  - **Tomato:** Bacterial spot, Early blight, Late blight, Leaf Mold, Mosaic virus, Septoria leaf spot, Spider mite, Target spot, Yellow leaf curl virus.
+  - **Wheat:** Septoria, Stripe rust.
+
+  If the image is not a plant leaf, or the plant is not one of the supported types (Beans, Cotton, Maize, Potatoes, Sunflower, Tobacco, Tomato, Wheat), return "Unknown" for plantType, "Unknown" for diseaseName, and 0 for confidenceScore.
+  If no disease is found on a supported plant, return "Healthy" for diseaseName and 1 for confidenceScore.
 
   Here is the plant leaf image: {{media url=photoDataUri}}
 `,
