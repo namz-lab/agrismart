@@ -23,10 +23,10 @@ export default function Home() {
                 AI-Powered Disease Detection for Cash Crops.
               </h2>
               <p className="text-lg text-muted-foreground max-w-xl mx-auto md:mx-0">
-                Instantly identify plant diseases with a snap of your camera. Our Vision Transformer model provides accurate, offline-first diagnosis to protect your harvest.
+                Instantly identify plant diseases with a snap of your camera. Our Vision Transformer model provides accurate diagnosis to protect your harvest.
               </p>
               <div className="flex justify-center md:justify-start">
-                <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
+                <Button asChild size="lg">
                   <Link href="/detect">
                     Start Diagnosis <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
@@ -48,10 +48,6 @@ export default function Home() {
           </div>
         </div>
       </main>
-
-      <footer className="text-center py-6 text-sm text-muted-foreground">
-        © {new Date().getFullYear()} AGRISMART. All rights reserved.
-      </footer>
     </div>
   );
 }

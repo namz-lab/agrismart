@@ -127,7 +127,7 @@ export function CameraView({ onCapture }: CameraViewProps) {
         <Button
           size="icon"
           onClick={handleCapture}
-          className="rounded-full h-20 w-20 bg-accent text-accent-foreground hover:bg-accent/90"
+          className="rounded-full h-20 w-20"
           aria-label="Capture Image"
         >
           <Camera className="h-8 w-8" />

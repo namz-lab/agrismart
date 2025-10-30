@@ -111,7 +111,7 @@ export function DetectionClient() {
           <CardContent className="flex flex-col items-center justify-center gap-4 p-8">
              <Upload className="h-16 w-16 text-muted-foreground" />
              <p className="text-center text-muted-foreground">Select an image of a plant leaf from your gallery.</p>
-            <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
+            <Button asChild>
                 <label htmlFor="file-upload">
                     Choose Image
                     <input id="file-upload" type="file" accept="image/*" className="sr-only" onChange={handleFileUpload} />

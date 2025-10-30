@@ -129,7 +129,7 @@ export function HistoryClient() {
             {searchTerm ? 'No results match your search.' : 'Start a new detection to see your history here.'}
           </p>
           {!searchTerm && (
-            <Button asChild className="mt-6 bg-accent text-accent-foreground hover:bg-accent/90">
+            <Button asChild className="mt-6">
                 <Link href="/detect">Start New Detection</Link>
             </Button>
           )}
